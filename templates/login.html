@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Login - TodoApp{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div class="text-center animate-fade-in">
+            <div class="mx-auto h-20 w-20 bg-primary rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-user text-white text-3xl"></i>
+            </div>
+            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">
+                Sign in to your account
+            </h2>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                Or
+                <a href="{{ url_for('register') }}" class="font-medium text-primary hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
+                    create a new account
+                </a>
+            </p>
+        </div>
+
+        <div class="mt-8 bg-white dark:bg-gray-800 py-8 px-6 shadow-xl rounded-lg animate-slide-down">
+            <form method="POST" action="{{ url_for('login') }}" class="space-y-6">
+                {{ form.hidden_tag() }}
+
+                <!-- Username Field -->
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-user mr-1"></i>Username
+                    </label>
+                    {{ form.username(class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Enter your username") }}
+
+                    {% if form.username.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                            {% for error in form.username.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-lock mr-1"></i>Password
+                    </label>
+                    <div class="relative">
+                        {{ form.password(class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Enter your password", id="password") }}
+                        <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+
+                    {% if form.password.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                            {% for error in form.password.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Remember Me -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        {{ form.remember_me(class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded") }}
+                        <label for="remember_me" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+                            Remember me
+                        </label>
+                    </div>
+
+                    <div class="text-sm">
+                        <a href="#" class="font-medium text-primary hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
+                            Forgot password?
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    {{ form.submit(class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all transform hover:scale-105 cursor-pointer") }}
+                </div>
+            </form>
+
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                            New to TodoApp?
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <a href="{{ url_for('register') }}" class="w-full flex justify-center py-3 px-4 border-2 border-primary text-sm font-medium rounded-lg text-primary hover:bg-primary hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white transition-all transform hover:scale-105">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Create an account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+</script>
+{% endblock %}

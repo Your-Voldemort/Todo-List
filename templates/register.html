@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Register - TodoApp{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div class="text-center animate-fade-in">
+            <div class="mx-auto h-20 w-20 bg-secondary rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-user-plus text-white text-3xl"></i>
+            </div>
+            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">
+                Create your account
+            </h2>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                Or
+                <a href="{{ url_for('login') }}" class="font-medium text-primary hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
+                    sign in to existing account
+                </a>
+            </p>
+        </div>
+
+        <div class="mt-8 bg-white dark:bg-gray-800 py-8 px-6 shadow-xl rounded-lg animate-slide-down">
+            <form method="POST" action="{{ url_for('register') }}" class="space-y-6">
+                {{ form.hidden_tag() }}
+
+                <!-- Username Field -->
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-user mr-1"></i>Username
+                    </label>
+                    {{ form.username(class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Choose a username") }}
+
+                    {% if form.username.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                            {% for error in form.username.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        <i class="fas fa-info-circle mr-1"></i>Username must be 3-20 characters long
+                    </p>
+                </div>
+
+                <!-- Email Field -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-envelope mr-1"></i>Email Address
+                    </label>
+                    {{ form.email(class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Enter your email", type="email") }}
+
+                    {% if form.email.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                            {% for error in form.email.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-lock mr-1"></i>Password
+                    </label>
+                    <div class="relative">
+                        {{ form.password(class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Choose a strong password", id="password") }}
+                        <button type="button" onclick="togglePassword('password', 'toggleIcon1')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+                            <i class="fas fa-eye" id="toggleIcon1"></i>
+                        </button>
+                    </div>
+
+                    {% if form.password.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                            {% for error in form.password.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Password Strength Indicator -->
+                    <div class="mt-2">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <div id="passwordStrength" class="h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <span id="strengthText" class="text-xs text-gray-500 dark:text-gray-400">Weak</span>
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-info-circle mr-1"></i>Password must be at least 6 characters long
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div>
+                    <label for="confirm_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-lock mr-1"></i>Confirm Password
+                    </label>
+                    <div class="relative">
+                        {{ form.confirm_password(class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Confirm your password", id="confirm_password") }}
+                        <button type="button" onclick="togglePassword('confirm_password', 'toggleIcon2')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+                            <i class="fas fa-eye" id="toggleIcon2"></i>
+                        </button>
+                    </div>
+
+                    {% if form.confirm_password.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                            {% for error in form.confirm_password.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" id="terms" required class="h-4 w-4 text-secondary focus:ring-secondary border-gray-300 rounded">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="terms" class="text-gray-700 dark:text-gray-300">
+                            I agree to the
+                            <a href="#" class="text-primary hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300">Terms and Conditions</a>
+                            and
+                            <a href="#" class="text-primary hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300">Privacy Policy</a>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    {{ form.submit(class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-secondary hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition-all transform hover:scale-105 cursor-pointer") }}
+                </div>
+            </form>
+
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                            Already have an account?
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <a href="{{ url_for('login') }}" class="w-full flex justify-center py-3 px-4 border-2 border-primary text-sm font-medium rounded-lg text-primary hover:bg-primary hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white transition-all transform hover:scale-105">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Sign in instead
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function togglePassword(fieldId, iconId) {
+        const passwordField = document.getElementById(fieldId);
+        const toggleIcon = document.getElementById(iconId);
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+
+    // Password strength indicator
+    document.getElementById('password').addEventListener('input', function(e) {
+        const password = e.target.value;
+        const strengthBar = document.getElementById('passwordStrength');
+        const strengthText = document.getElementById('strengthText');
+
+        let strength = 0;
+        let text = 'Weak';
+        let color = 'bg-red-500';
+
+        if (password.length >= 6) strength += 25;
+        if (password.length >= 10) strength += 25;
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25;
+        if (/\d/.test(password) && /[^a-zA-Z\d]/.test(password)) strength += 25;
+
+        if (strength >= 75) {
+            text = 'Strong';
+            color = 'bg-green-500';
+        } else if (strength >= 50) {
+            text = 'Medium';
+            color = 'bg-yellow-500';
+        }
+
+        strengthBar.style.width = strength + '%';
+        strengthBar.className = 'h-full transition-all duration-300 ' + color;
+        strengthText.textContent = text;
+    });
+</script>
+{% endblock %}

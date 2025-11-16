@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}Add Category - TodoApp{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto animate-fade-in">
+    <!-- Header -->
+    <div class="mb-8">
+        <a href="{{ url_for('categories') }}" class="inline-flex items-center text-primary hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 mb-4 transition-colors">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Back to Categories
+        </a>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Create New Category</h1>
+        <p class="text-gray-600 dark:text-gray-400">Add a new category to organize your todos</p>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 animate-slide-down">
+        <form method="POST" action="{{ url_for('add_category') }}" class="space-y-6">
+            {{ form.hidden_tag() }}
+
+            <!-- Category Name -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fas fa-tag mr-1"></i>
+                    Category Name <span class="text-red-500">*</span>
+                </label>
+                {{ form.name(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all", placeholder="Enter category name") }}
+
+                {% if form.name.errors %}
+                    <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                        {% for error in form.name.errors %}
+                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-info-circle mr-1"></i>Choose a descriptive name for your category
+                </p>
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fas fa-align-left mr-1"></i>
+                    Description
+                </label>
+                {{ form.description(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all resize-y", rows="3", placeholder="Add a brief description (optional)") }}
+
+                {% if form.description.errors %}
+                    <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                        {% for error in form.description.errors %}
+                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Color Picker -->
+            <div>
+                <label for="color" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fas fa-palette mr-1"></i>
+                    Category Color <span class="text-red-500">*</span>
+                </label>
+
+                <div class="flex items-center space-x-4">
+                    <!-- Color Input -->
+                    <div class="relative">
+                        {{ form.color(class="w-24 h-12 rounded-lg cursor-pointer border-2 border-gray-300 dark:border-gray-600", type="color", id="colorPicker") }}
+                    </div>
+
+                    <!-- Color Value Display -->
+                    <div class="flex-1">
+                        <input type="text" id="colorValue" readonly
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-white text-gray-900 font-mono text-sm">
+                    </div>
+
+                    <!-- Color Preview -->
+                    <div class="flex items-center space-x-2">
+                        <div id="colorPreview" class="w-12 h-12 rounded-lg border-2 border-gray-300 dark:border-gray-600 shadow-inner"></div>
+                    </div>
+                </div>
+
+                {% if form.color.errors %}
+                    <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                        {% for error in form.color.errors %}
+                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Preset Colors -->
+                <div class="mt-4">
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Quick select:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="setColor('#3b82f6')" class="w-10 h-10 rounded-lg shadow-md hover:scale-110 transition-transform" style="background-color: #3b82f6" title="Blue"></button>
+                        <button type="button" onclick="setColor('#ef4444')" class="w-10 h-10 rounded-lg shadow-md hover:scale-110 transition-transform" style="background-color: #ef4444" title="Red"></button>
+                        <button type="button" onclick="setColor('#10b981')" class="w-10 h-10 rounded-lg shadow-md hover:scale-110 transition-transform" style="background-color: #10b981" title="Green"></button>
+                        <button type="button" onclick="setColor('#f59e0b')" class="w-10 h-10 rounded-lg shadow-md hover:scale-110 transition-transform" style="background-color: #f59e0b" title="Orange"></button>
+                        <button type="button" onclick="setColor('#8b5cf6')" class="w-10 h-10 rounded-lg shadow-md hover:scale-110 transition-transform" style="background-color: #8b5cf6" title="Purple"></button>
+                        <button type="button" onclick="setColor('#ec4899')" class="w-10 h-10 rounded-lg shadow-md hover:scale-110 transition-transform" style="background-color: #ec4899" title="Pink"></button>
+                        <button type="button" onclick="setColor('#06b6d4')" class="w-10 h-10 rounded-lg shadow-md hover:scale-110 transition-transform" style="background-color: #06b6d4" title="Cyan"></button>
+                        <button type="button" onclick="setColor('#84cc16')" class="w-10 h-10 rounded-lg shadow-md hover:scale-110 transition-transform" style="background-color: #84cc16" title="Lime"></button>
+                        <button type="button" onclick="setColor('#f97316')" class="w-10 h-10 rounded-lg shadow-md hover:scale-110 transition-transform" style="background-color: #f97316" title="Orange Red"></button>
+                        <button type="button" onclick="setColor('#6366f1')" class="w-10 h-10 rounded-lg shadow-md hover:scale-110 transition-transform" style="background-color: #6366f1" title="Indigo"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Card -->
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
+                    <i class="fas fa-eye mr-1"></i>
+                    Preview
+                </h3>
+
+                <div class="bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden">
+                    <div id="previewColorBar" class="h-3"></div>
+                    <div class="p-6">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div id="previewIcon" class="w-12 h-12 rounded-full flex items-center justify-center">
+                                <i class="fas fa-tag text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 id="previewName" class="text-lg font-bold text-gray-900 dark:text-white">Category Name</h4>
+                                <p id="previewDescription" class="text-sm text-gray-600 dark:text-gray-400">Category description</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-600 rounded-lg p-4">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600 dark:text-gray-300">Sample badge:</span>
+                                <span id="previewBadge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
+                                    <i class="fas fa-tag mr-1"></i>
+                                    <span id="previewBadgeText">Category</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <a href="{{ url_for('categories') }}" class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-times mr-2"></i>
+                    Cancel
+                </a>
+                {{ form.submit(class="px-6 py-3 bg-primary hover:bg-blue-600 text-white font-medium rounded-lg transition-all transform hover:scale-105 shadow-lg cursor-pointer") }}
+            </div>
+        </form>
+    </div>
+
+    <!-- Tips Section -->
+    <div class="mt-6 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-20 rounded-lg p-6 border-l-4 border-blue-500">
+        <h3 class="text-lg font-semibold text-blue-900 dark:text-blue-300 mb-2">
+            <i class="fas fa-lightbulb mr-2"></i>
+            Category Tips
+        </h3>
+        <ul class="space-y-2 text-sm text-blue-800 dark:text-blue-200">
+            <li><i class="fas fa-check-circle mr-2 text-blue-500"></i>Use descriptive names that clearly identify the category purpose</li>
+            <li><i class="fas fa-check-circle mr-2 text-blue-500"></i>Choose distinct colors to easily differentiate categories</li>
+            <li><i class="fas fa-check-circle mr-2 text-blue-500"></i>Create categories based on context (Work, Personal, Shopping, etc.)</li>
+            <li><i class="fas fa-check-circle mr-2 text-blue-500"></i>Keep the number of categories manageable (5-10 is ideal)</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const colorPicker = document.getElementById('colorPicker');
+    const colorValue = document.getElementById('colorValue');
+    const colorPreview = document.getElementById('colorPreview');
+    const previewColorBar = document.getElementById('previewColorBar');
+    const previewIcon = document.getElementById('previewIcon');
+    const previewBadge = document.getElementById('previewBadge');
+    const nameInput = document.getElementById('name');
+    const descriptionInput = document.getElementById('description');
+    const previewName = document.getElementById('previewName');
+    const previewDescription = document.getElementById('previewDescription');
+    const previewBadgeText = document.getElementById('previewBadgeText');
+
+    // Update color displays
+    function updateColorDisplay(color) {
+        colorValue.value = color.toUpperCase();
+        colorPreview.style.backgroundColor = color;
+        previewColorBar.style.backgroundColor = color;
+        previewIcon.style.backgroundColor = color + '20';
+        previewIcon.style.color = color;
+        previewBadge.style.backgroundColor = color + '20';
+        previewBadge.style.color = color;
+    }
+
+    // Set color from preset buttons
+    function setColor(color) {
+        colorPicker.value = color;
+        updateColorDisplay(color);
+    }
+
+    // Listen to color picker changes
+    colorPicker.addEventListener('input', function() {
+        updateColorDisplay(this.value);
+    });
+
+    // Update preview name
+    nameInput.addEventListener('input', function() {
+        previewName.textContent = this.value || 'Category Name';
+        previewBadgeText.textContent = this.value || 'Category';
+    });
+
+    // Update preview description
+    descriptionInput.addEventListener('input', function() {
+        previewDescription.textContent = this.value || 'Category description';
+    });
+
+    // Initialize color display
+    updateColorDisplay(colorPicker.value);
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const name = nameInput.value.trim();
+        const color = colorPicker.value;
+
+        if (!name) {
+            e.preventDefault();
+            alert('Please enter a category name');
+            nameInput.focus();
+            return false;
+        }
+
+        if (!color) {
+            e.preventDefault();
+            alert('Please select a color');
+            colorPicker.focus();
+            return false;
+        }
+    });
+</script>
+{% endblock %}

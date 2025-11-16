@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Todo - TodoApp{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto animate-fade-in">
+    <!-- Header -->
+    <div class="mb-8">
+        <a href="{{ url_for('index') }}" class="inline-flex items-center text-primary hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 mb-4 transition-colors">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Back to Todos
+        </a>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Edit Todo</h1>
+        <p class="text-gray-600 dark:text-gray-400">Update your task details</p>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 animate-slide-down">
+        <form method="POST" action="{{ url_for('edit_todo', id=todo.id) }}" class="space-y-6">
+            {{ form.hidden_tag() }}
+
+            <!-- Title Field -->
+            <div>
+                <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fas fa-heading mr-1"></i>
+                    Title <span class="text-red-500">*</span>
+                </label>
+                {{ form.title(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all", placeholder="Enter todo title") }}
+
+                {% if form.title.errors %}
+                    <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                        {% for error in form.title.errors %}
+                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Description Field -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fas fa-align-left mr-1"></i>
+                    Description
+                </label>
+                {{ form.description(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all resize-y", rows="4", placeholder="Add more details about your todo (optional)") }}
+
+                {% if form.description.errors %}
+                    <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                        {% for error in form.description.errors %}
+                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-info-circle mr-1"></i>You can add detailed information about your task here
+                </p>
+            </div>
+
+            <!-- Priority and Category Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Priority Field -->
+                <div>
+                    <label for="priority" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-flag mr-1"></i>
+                        Priority <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.priority(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white transition-all") }}
+
+                    {% if form.priority.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                            {% for error in form.priority.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Priority Visual Indicator -->
+                    <div class="mt-2 flex items-center space-x-2">
+                        <div id="priorityIndicator" class="flex items-center space-x-1">
+                            <i class="fas fa-circle text-xs"></i>
+                            <span id="priorityText" class="text-xs font-medium"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Field -->
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-tag mr-1"></i>
+                        Category
+                    </label>
+                    {{ form.category(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white transition-all") }}
+
+                    {% if form.category.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                            {% for error in form.category.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        <a href="{{ url_for('add_category') }}" class="text-primary hover:text-blue-600 dark:text-blue-400" target="_blank">
+                            <i class="fas fa-plus mr-1"></i>Create new category
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Due Date and Completed Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Due Date Field -->
+                <div>
+                    <label for="due_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-calendar mr-1"></i>
+                        Due Date
+                    </label>
+                    {{ form.due_date(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white transition-all", type="date") }}
+
+                    {% if form.due_date.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
+                            {% for error in form.due_date.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        <i class="fas fa-info-circle mr-1"></i>Optional - Set a deadline for this task
+                    </p>
+                </div>
+
+                <!-- Completed Checkbox -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-check-circle mr-1"></i>
+                        Status
+                    </label>
+                    <div class="flex items-center h-12 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
+                        {{ form.completed(class="h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded") }}
+                        <label for="completed" class="ml-3 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                            Mark as completed
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Date Buttons -->
+            <div class="flex flex-wrap gap-2">
+                <button type="button" onclick="setDueDate(1)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    <i class="fas fa-sun mr-1"></i>Tomorrow
+                </button>
+                <button type="button" onclick="setDueDate(3)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    <i class="fas fa-calendar-day mr-1"></i>3 Days
+                </button>
+                <button type="button" onclick="setDueDate(7)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    <i class="fas fa-calendar-week mr-1"></i>1 Week
+                </button>
+                <button type="button" onclick="setDueDate(14)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    <i class="fas fa-calendar-alt mr-1"></i>2 Weeks
+                </button>
+                <button type="button" onclick="clearDueDate()" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    <i class="fas fa-times mr-1"></i>Clear
+                </button>
+            </div>
+
+            <!-- Metadata Info -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-2 text-sm">
+                <div class="flex items-center text-gray-600 dark:text-gray-400">
+                    <i class="fas fa-clock mr-2 w-5"></i>
+                    <span>Created: {{ todo.created_at.strftime('%b %d, %Y at %I:%M %p') }}</span>
+                </div>
+                {% if todo.updated_at %}
+                <div class="flex items-center text-gray-600 dark:text-gray-400">
+                    <i class="fas fa-edit mr-2 w-5"></i>
+                    <span>Last updated: {{ todo.updated_at.strftime('%b %d, %Y at %I:%M %p') }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div>
+                    <button type="button" onclick="deleteTodo()" class="px-6 py-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition-colors">
+                        <i class="fas fa-trash mr-2"></i>
+                        Delete Todo
+                    </button>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('index') }}" class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-times mr-2"></i>
+                        Cancel
+                    </a>
+                    {{ form.submit(class="px-6 py-3 bg-primary hover:bg-blue-600 text-white font-medium rounded-lg transition-all transform hover:scale-105 shadow-lg cursor-pointer") }}
+                </div>
+            </div>
+        </form>
+
+        <!-- Delete Form (hidden) -->
+        <form id="deleteForm" method="POST" action="{{ url_for('delete_todo', id=todo.id) }}" style="display: none;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Set due date helper function
+    function setDueDate(days) {
+        const dueDateInput = document.getElementById('due_date');
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+        const formattedDate = date.toISOString().split('T')[0];
+        dueDateInput.value = formattedDate;
+    }
+
+    // Clear due date
+    function clearDueDate() {
+        document.getElementById('due_date').value = '';
+    }
+
+    // Delete todo with confirmation
+    function deleteTodo() {
+        if (confirm('Are you sure you want to delete this todo? This action cannot be undone.')) {
+            document.getElementById('deleteForm').submit();
+        }
+    }
+
+    // Set minimum date to today
+    document.addEventListener('DOMContentLoaded', function() {
+        const dueDateInput = document.getElementById('due_date');
+        const today = new Date().toISOString().split('T')[0];
+        dueDateInput.setAttribute('min', today);
+    });
+
+    // Priority indicator
+    const prioritySelect = document.getElementById('priority');
+    const priorityIndicator = document.getElementById('priorityIndicator');
+    const priorityText = document.getElementById('priorityText');
+
+    function updatePriorityIndicator() {
+        const priority = prioritySelect.value;
+        const colors = {
+            'high': 'text-red-600 dark:text-red-400',
+            'medium': 'text-yellow-600 dark:text-yellow-400',
+            'low': 'text-green-600 dark:text-green-400'
+        };
+
+        priorityIndicator.className = 'flex items-center space-x-1 ' + (colors[priority] || '');
+        priorityText.textContent = priority ? priority.charAt(0).toUpperCase() + priority.slice(1) + ' Priority' : '';
+    }
+
+    prioritySelect.addEventListener('change', updatePriorityIndicator);
+    updatePriorityIndicator();
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        // Don't validate if it's the delete form
+        if (e.target.id === 'deleteForm') return;
+
+        const title = document.getElementById('title').value.trim();
+        const priority = document.getElementById('priority').value;
+
+        if (!title) {
+            e.preventDefault();
+            alert('Please enter a title for your todo');
+            document.getElementById('title').focus();
+            return false;
+        }
+
+        if (!priority) {
+            e.preventDefault();
+            alert('Please select a priority level');
+            document.getElementById('priority').focus();
+            return false;
+        }
+    });
+</script>
+{% endblock %}
