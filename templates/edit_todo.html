@@ -102,7 +102,7 @@
                     {% endif %}
 
                     <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        <a href="{{ url_for('add_category') }}" class="text-primary hover:text-blue-600 dark:text-blue-400 inline-flex items-center" target="_blank">
+                        <a href="{{ url_for('add_category') }}" class="text-primary hover:text-blue-600 dark:text-blue-400 inline-flex items-center">
                             <i class="fas fa-plus mr-2"></i>
                             <span>Create new category</span>
                         </a>
@@ -111,7 +111,7 @@
             </div>
 
             <!-- Due Date and Completed Row -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                 <!-- Due Date Field -->
                 <div>
                     <label for="due_date" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -252,6 +252,7 @@
     function updatePriorityIndicator() {
         const priority = prioritySelect.value;
         const colors = {
+            'urgent': 'text-purple-600 dark:text-purple-400',
             'high': 'text-red-600 dark:text-red-400',
             'medium': 'text-yellow-600 dark:text-yellow-400',
             'low': 'text-green-600 dark:text-green-400'
@@ -269,22 +270,10 @@
         // Don't validate if it's the delete form
         if (e.target.id === 'deleteForm') return;
 
-        const title = document.getElementById('title').value.trim();
-        const priority = document.getElementById('priority').value;
-
-        if (!title) {
-            e.preventDefault();
-            alert('Please enter a title for your todo');
-            document.getElementById('title').focus();
-            return false;
-        }
-
-        if (!priority) {
-            e.preventDefault();
-            alert('Please select a priority level');
-            document.getElementById('priority').focus();
-            return false;
-        }
+        const submitButton = e.target.querySelector('input[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.value = 'Saving...';
+        submitButton.classList.add('opacity-50', 'cursor-not-allowed');
     });
 </script>
 {% endblock %}

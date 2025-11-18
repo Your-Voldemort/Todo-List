@@ -215,6 +215,7 @@
     function updatePriorityIndicator() {
         const priority = prioritySelect.value;
         const colors = {
+            'urgent': 'text-purple-600 dark:text-purple-400',
             'high': 'text-red-600 dark:text-red-400',
             'medium': 'text-yellow-600 dark:text-yellow-400',
             'low': 'text-green-600 dark:text-green-400'
@@ -229,22 +230,10 @@
 
     // Form validation
     document.querySelector('form').addEventListener('submit', function(e) {
-        const title = document.getElementById('title').value.trim();
-        const priority = document.getElementById('priority').value;
-
-        if (!title) {
-            e.preventDefault();
-            alert('Please enter a title for your todo');
-            document.getElementById('title').focus();
-            return false;
-        }
-
-        if (!priority) {
-            e.preventDefault();
-            alert('Please select a priority level');
-            document.getElementById('priority').focus();
-            return false;
-        }
+        const submitButton = e.target.querySelector('input[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.value = 'Saving...';
+        submitButton.classList.add('opacity-50', 'cursor-not-allowed');
     });
 </script>
 {% endblock %}
