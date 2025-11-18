@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField, DateTimeLocalField, PasswordField, EmailField, BooleanField
+from wtforms import StringField, TextAreaField, SelectField, DateTimeLocalField, PasswordField, EmailField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
 from models import User
 
@@ -14,6 +14,7 @@ class RegistrationForm(FlaskForm):
                            validators=[DataRequired(), Length(min=6)])
     confirm_password = PasswordField('Confirm Password',
                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
         """Check if username already exists"""
@@ -35,6 +36,7 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password',
                            validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Sign In')
 
 
 class TodoForm(FlaskForm):
@@ -57,6 +59,7 @@ class TodoForm(FlaskForm):
     category_id = SelectField('Category',
                              coerce=int,
                              validators=[Optional()])
+    submit = SubmitField('Save Todo')
 
 
 class CategoryForm(FlaskForm):
@@ -66,3 +69,4 @@ class CategoryForm(FlaskForm):
     color = StringField('Color',
                        validators=[DataRequired(), Length(min=7, max=7)],
                        default='#6366f1')
+    submit = SubmitField('Save Category')
