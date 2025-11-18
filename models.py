@@ -39,6 +39,13 @@ class User(UserMixin, db.Model):
         cascade="all, delete-orphan"
     )
 
+    def __init__(self, username: str, email: str, **kwargs):
+        """Initialize user with required fields"""
+        super().__init__(**kwargs)
+        self.username = username
+        self.email = email
+        # password_hash will be set via set_password method
+
     def set_password(self, password: str) -> None:
         """Hash and set the user's password"""
         self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -67,6 +74,13 @@ class Category(db.Model):
     # Relationships
     user: Mapped["User"] = relationship("User")
     todos: Mapped[List["Todo"]] = relationship("Todo", back_populates="category")
+
+    def __init__(self, name: str, user_id: int, color: str = "#6366f1", **kwargs):
+        """Initialize category with required fields"""
+        super().__init__(**kwargs)
+        self.name = name
+        self.user_id = user_id
+        self.color = color
 
     def __repr__(self) -> str:
         return f'<Category {self.name}>'
@@ -114,6 +128,18 @@ class Todo(db.Model):
     # Relationships
     user: Mapped["User"] = relationship("User", back_populates="todos")
     category: Mapped[Optional["Category"]] = relationship("Category", back_populates="todos")
+
+    def __init__(self, title: str, user_id: int, description: Optional[str] = None, 
+                 priority: PriorityLevel = PriorityLevel.MEDIUM, due_date: Optional[datetime] = None,
+                 category_id: Optional[int] = None, **kwargs):
+        """Initialize todo with required and optional fields"""
+        super().__init__(**kwargs)
+        self.title = title
+        self.user_id = user_id
+        self.description = description
+        self.priority = priority
+        self.due_date = due_date
+        self.category_id = category_id
 
     def __repr__(self) -> str:
         return f'<Todo {self.title}>'

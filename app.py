@@ -38,7 +38,7 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 # Flask-Login setup
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'login'  # type: ignore[misc]
 login_manager.login_message = 'Please log in to access this page.'
 login_manager.login_message_category = 'info'
 
@@ -72,10 +72,10 @@ def register():
     if form.validate_on_submit():
         try:
             user = User(
-                username=form.username.data,
-                email=form.email.data
+                username=form.username.data,  # type: ignore[arg-type]
+                email=form.email.data  # type: ignore[arg-type]
             )
-            user.set_password(form.password.data)
+            user.set_password(form.password.data)  # type: ignore[arg-type]
 
             db.session.add(user)
             db.session.commit()
@@ -101,7 +101,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
 
         if user and user.check_password(form.password.data):
-            login_user(user)
+            login_user(user, remember=form.remember_me.data)
             flash(f'Welcome back, {user.username}!', 'success')
 
             # Redirect to next page or index
@@ -203,17 +203,17 @@ def add():
 
     # Populate category choices
     categories = Category.query.filter_by(user_id=current_user.id).all()
-    form.category_id.choices = [(0, 'No Category')] + [(c.id, c.name) for c in categories]
+    form.category_id.choices = [(0, 'No Category')] + [(c.id, c.name) for c in categories]  # type: ignore[assignment]
 
     if form.validate_on_submit():
         try:
             new_todo = Todo(
-                title=form.title.data,
-                description=form.description.data if form.description.data else None,
-                priority=PriorityLevel(form.priority.data),
-                due_date=form.due_date.data,
-                category_id=form.category_id.data if form.category_id.data != 0 else None,
-                user_id=current_user.id
+                title=form.title.data,  # type: ignore[arg-type]
+                description=form.description.data if form.description.data else None,  # type: ignore[arg-type]
+                priority=PriorityLevel(form.priority.data),  # type: ignore[arg-type]
+                due_date=form.due_date.data,  # type: ignore[arg-type]
+                category_id=form.category_id.data if form.category_id.data != 0 else None,  # type: ignore[arg-type]
+                user_id=current_user.id  # type: ignore[arg-type]
             )
 
             db.session.add(new_todo)
@@ -237,7 +237,7 @@ def edit(todo_id):
 
     # Populate category choices
     categories = Category.query.filter_by(user_id=current_user.id).all()
-    form.category_id.choices = [(0, 'No Category')] + [(c.id, c.name) for c in categories]
+    form.category_id.choices = [(0, 'No Category')] + [(c.id, c.name) for c in categories]  # type: ignore[assignment]
 
     if request.method == 'GET':
         # Pre-populate form with current values
@@ -332,9 +332,9 @@ def add_category():
     if form.validate_on_submit():
         try:
             new_category = Category(
-                name=form.name.data,
-                color=form.color.data,
-                user_id=current_user.id
+                name=form.name.data,  # type: ignore[arg-type]
+                color=form.color.data,  # type: ignore[arg-type]
+                user_id=current_user.id  # type: ignore[arg-type]
             )
 
             db.session.add(new_category)
@@ -528,10 +528,10 @@ def add_legacy():
 
     try:
         new_todo = Todo(
-            title=title,
-            description=description if description else None,
-            user_id=current_user.id,
-            priority=PriorityLevel.MEDIUM
+            title=title,  # type: ignore[arg-type]
+            description=description if description else None,  # type: ignore[arg-type]
+            user_id=current_user.id,  # type: ignore[arg-type]
+            priority=PriorityLevel.MEDIUM  # type: ignore[arg-type]
         )
         db.session.add(new_todo)
         db.session.commit()

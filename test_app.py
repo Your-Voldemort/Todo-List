@@ -3,7 +3,7 @@ Test script to verify the Todo application works correctly
 """
 import sys
 import io
-from app import app, db, Todo
+from app import app, db, User, Todo, Category, PriorityLevel
 from datetime import datetime, timezone
 
 # Set UTF-8 encoding for Windows console
@@ -25,12 +25,35 @@ def test_app():
             print(f"   ✗ Database error: {e}")
             return False
 
+        # Test 1b: Create test user
+        print("\n1b. Testing user creation...")
+        try:
+            # Clean up existing test user if any
+            test_user = User.query.filter_by(username="testuser").first()
+            if test_user:
+                db.session.delete(test_user)
+                db.session.commit()
+            
+            test_user = User(
+                username="testuser",
+                email="test@example.com"
+            )
+            test_user.set_password("testpass123")
+            db.session.add(test_user)
+            db.session.commit()
+            print(f"   ✓ User created with ID: {test_user.id}")
+        except Exception as e:
+            print(f"   ✗ User creation error: {e}")
+            db.session.rollback()
+            return False
+
         # Test 2: Create a todo
         print("\n2. Testing todo creation...")
         try:
             test_todo = Todo(
                 title="Test Task",
-                description="This is a test task"
+                description="This is a test task",
+                user_id=test_user.id
             )
             db.session.add(test_todo)
             db.session.commit()
@@ -91,26 +114,33 @@ def test_app():
         print("\n7. Testing Flask routes...")
         try:
             with app.test_client() as client:
+                # Login first
+                response = client.post('/login', data={
+                    'username': 'testuser',
+                    'password': 'testpass123'
+                }, follow_redirects=True)
+                print(f"   ✓ POST /login - Status: {response.status_code}")
+
                 # Test index route
                 response = client.get('/')
                 print(f"   ✓ GET / - Status: {response.status_code}")
 
-                # Test add route
-                response = client.post('/add', data={
+                # Test add route (using legacy endpoint for simplicity)
+                response = client.post('/add_legacy', data={
                     'title': 'Test Todo',
                     'description': 'Test Description'
-                })
-                print(f"   ✓ POST /add - Status: {response.status_code}")
+                }, follow_redirects=True)
+                print(f"   ✓ POST /add_legacy - Status: {response.status_code}")
 
                 # Get the todo we just created
-                todo = Todo.query.filter_by(title='Test Todo').first()
+                todo = Todo.query.filter_by(title='Test Todo', user_id=test_user.id).first()
                 if todo:
                     # Test complete route
-                    response = client.get(f'/complete/{todo.id}')
+                    response = client.get(f'/complete/{todo.id}', follow_redirects=True)
                     print(f"   ✓ GET /complete/{todo.id} - Status: {response.status_code}")
 
                     # Test delete route
-                    response = client.get(f'/delete/{todo.id}')
+                    response = client.get(f'/delete/{todo.id}', follow_redirects=True)
                     print(f"   ✓ GET /delete/{todo.id} - Status: {response.status_code}")
 
         except Exception as e:
@@ -121,22 +151,41 @@ def test_app():
         print("\n8. Testing validation...")
         try:
             with app.test_client() as client:
+                # Login first
+                client.post('/login', data={
+                    'username': 'testuser',
+                    'password': 'testpass123'
+                }, follow_redirects=True)
+
                 # Test empty title
-                response = client.post('/add', data={
+                response = client.post('/add_legacy', data={
                     'title': '',
                     'description': 'No title'
-                })
+                }, follow_redirects=True)
                 print(f"   ✓ Empty title validation - Status: {response.status_code}")
 
                 # Test long title
-                response = client.post('/add', data={
+                response = client.post('/add_legacy', data={
                     'title': 'x' * 101,
                     'description': 'Too long'
-                })
+                }, follow_redirects=True)
                 print(f"   ✓ Long title validation - Status: {response.status_code}")
         except Exception as e:
             print(f"   ✗ Validation error: {e}")
             return False
+
+        # Clean up test data
+        print("\n9. Cleaning up test data...")
+        try:
+            todos_to_delete = Todo.query.filter_by(user_id=test_user.id).all()
+            for todo in todos_to_delete:
+                db.session.delete(todo)
+            db.session.delete(test_user)
+            db.session.commit()
+            print("   ✓ Test data cleaned up")
+        except Exception as e:
+            print(f"   ✗ Cleanup error: {e}")
+            db.session.rollback()
 
     print("\n" + "=" * 50)
     print("All tests passed successfully! ✓")

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField, DateTimeLocalField, PasswordField, EmailField
+from wtforms import StringField, TextAreaField, SelectField, DateTimeLocalField, PasswordField, EmailField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
 from models import User
 
@@ -34,6 +34,7 @@ class LoginForm(FlaskForm):
                          validators=[DataRequired()])
     password = PasswordField('Password',
                            validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
 
 
 class TodoForm(FlaskForm):
