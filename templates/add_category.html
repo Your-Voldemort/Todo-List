@@ -21,37 +21,38 @@
 
             <!-- Category Name -->
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    <i class="fas fa-tag mr-1"></i>
-                    Category Name <span class="text-red-500">*</span>
+                <label for="name" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fas fa-tag mr-2"></i>
+                    <span>Category Name <span class="text-red-500">*</span></span>
                 </label>
                 {{ form.name(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all", placeholder="Enter category name") }}
 
                 {% if form.name.errors %}
                     <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                         {% for error in form.name.errors %}
-                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                         {% endfor %}
                     </div>
                 {% endif %}
 
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    <i class="fas fa-info-circle mr-1"></i>Choose a descriptive name for your category
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 flex items-center">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span>Choose a descriptive name for your category</span>
                 </p>
             </div>
 
             <!-- Description -->
             <div>
-                <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    <i class="fas fa-align-left mr-1"></i>
-                    Description
+                <label for="description" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fas fa-align-left mr-2"></i>
+                    <span>Description</span>
                 </label>
                 {{ form.description(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all resize-y", rows="3", placeholder="Add a brief description (optional)") }}
 
                 {% if form.description.errors %}
                     <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                         {% for error in form.description.errors %}
-                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                         {% endfor %}
                     </div>
                 {% endif %}
@@ -59,9 +60,9 @@
 
             <!-- Color Picker -->
             <div>
-                <label for="color" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    <i class="fas fa-palette mr-1"></i>
-                    Category Color <span class="text-red-500">*</span>
+                <label for="color" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fas fa-palette mr-2"></i>
+                    <span>Category Color <span class="text-red-500">*</span></span>
                 </label>
 
                 <div class="flex items-center space-x-4">

@@ -21,16 +21,16 @@
 
             <!-- Title Field -->
             <div>
-                <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    <i class="fas fa-heading mr-1"></i>
-                    Title <span class="text-red-500">*</span>
+                <label for="title" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fas fa-heading mr-2"></i>
+                    <span>Title <span class="text-red-500">*</span></span>
                 </label>
                 {{ form.title(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all", placeholder="Enter todo title") }}
 
                 {% if form.title.errors %}
                     <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                         {% for error in form.title.errors %}
-                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                         {% endfor %}
                     </div>
                 {% endif %}
@@ -38,22 +38,23 @@
 
             <!-- Description Field -->
             <div>
-                <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    <i class="fas fa-align-left mr-1"></i>
-                    Description
+                <label for="description" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fas fa-align-left mr-2"></i>
+                    <span>Description</span>
                 </label>
                 {{ form.description(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all resize-y", rows="4", placeholder="Add more details about your todo (optional)") }}
 
                 {% if form.description.errors %}
                     <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                         {% for error in form.description.errors %}
-                            <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                            <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                         {% endfor %}
                     </div>
                 {% endif %}
 
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    <i class="fas fa-info-circle mr-1"></i>You can add detailed information about your task here
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 flex items-center">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span>You can add detailed information about your task here</span>
                 </p>
             </div>
 
@@ -61,16 +62,16 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Priority Field -->
                 <div>
-                    <label for="priority" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-flag mr-1"></i>
-                        Priority <span class="text-red-500">*</span>
+                    <label for="priority" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-flag mr-2"></i>
+                        <span>Priority <span class="text-red-500">*</span></span>
                     </label>
                     {{ form.priority(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white transition-all") }}
 
                     {% if form.priority.errors %}
                         <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                             {% for error in form.priority.errors %}
-                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                                <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -86,23 +87,24 @@
 
                 <!-- Category Field -->
                 <div>
-                    <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-tag mr-1"></i>
-                        Category
+                    <label for="category" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-tag mr-2"></i>
+                        <span>Category</span>
                     </label>
                     {{ form.category(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white transition-all") }}
 
                     {% if form.category.errors %}
                         <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                             {% for error in form.category.errors %}
-                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                                <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                             {% endfor %}
                         </div>
                     {% endif %}
 
                     <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        <a href="{{ url_for('add_category') }}" class="text-primary hover:text-blue-600 dark:text-blue-400" target="_blank">
-                            <i class="fas fa-plus mr-1"></i>Create new category
+                        <a href="{{ url_for('add_category') }}" class="text-primary hover:text-blue-600 dark:text-blue-400 inline-flex items-center" target="_blank">
+                            <i class="fas fa-plus mr-2"></i>
+                            <span>Create new category</span>
                         </a>
                     </p>
                 </div>
@@ -112,30 +114,31 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Due Date Field -->
                 <div>
-                    <label for="due_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-calendar mr-1"></i>
-                        Due Date
+                    <label for="due_date" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-calendar mr-2"></i>
+                        <span>Due Date</span>
                     </label>
                     {{ form.due_date(class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white transition-all", type="date") }}
 
                     {% if form.due_date.errors %}
                         <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                             {% for error in form.due_date.errors %}
-                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                                <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                             {% endfor %}
                         </div>
                     {% endif %}
 
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-info-circle mr-1"></i>Optional - Set a deadline for this task
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 flex items-center">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <span>Optional - Set a deadline for this task</span>
                     </p>
                 </div>
 
                 <!-- Completed Checkbox -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-check-circle mr-1"></i>
-                        Status
+                    <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>Status</span>
                     </label>
                     <div class="flex items-center h-12 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
                         {{ form.completed(class="h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded") }}
@@ -148,20 +151,25 @@
 
             <!-- Quick Date Buttons -->
             <div class="flex flex-wrap gap-2">
-                <button type="button" onclick="setDueDate(1)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                    <i class="fas fa-sun mr-1"></i>Tomorrow
+                <button type="button" onclick="setDueDate(1)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors inline-flex items-center">
+                    <i class="fas fa-sun mr-2"></i>
+                    <span>Tomorrow</span>
                 </button>
-                <button type="button" onclick="setDueDate(3)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                    <i class="fas fa-calendar-day mr-1"></i>3 Days
+                <button type="button" onclick="setDueDate(3)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors inline-flex items-center">
+                    <i class="fas fa-calendar-day mr-2"></i>
+                    <span>3 Days</span>
                 </button>
-                <button type="button" onclick="setDueDate(7)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                    <i class="fas fa-calendar-week mr-1"></i>1 Week
+                <button type="button" onclick="setDueDate(7)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors inline-flex items-center">
+                    <i class="fas fa-calendar-week mr-2"></i>
+                    <span>1 Week</span>
                 </button>
-                <button type="button" onclick="setDueDate(14)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                    <i class="fas fa-calendar-alt mr-1"></i>2 Weeks
+                <button type="button" onclick="setDueDate(14)" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors inline-flex items-center">
+                    <i class="fas fa-calendar-alt mr-2"></i>
+                    <span>2 Weeks</span>
                 </button>
-                <button type="button" onclick="clearDueDate()" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                    <i class="fas fa-times mr-1"></i>Clear
+                <button type="button" onclick="clearDueDate()" class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors inline-flex items-center">
+                    <i class="fas fa-times mr-2"></i>
+                    <span>Clear</span>
                 </button>
             </div>
 

@@ -26,34 +26,37 @@
 
                 <!-- Username Field -->
                 <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-user mr-1"></i>Username
+                    <label for="username" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-user mr-2"></i>
+                        <span>Username</span>
                     </label>
                     {{ form.username(class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Choose a username") }}
 
                     {% if form.username.errors %}
                         <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                             {% for error in form.username.errors %}
-                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                                <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-info-circle mr-1"></i>Username must be 3-20 characters long
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 flex items-center">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <span>Username must be 3-20 characters long</span>
                     </p>
                 </div>
 
                 <!-- Email Field -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-envelope mr-1"></i>Email Address
+                    <label for="email" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-envelope mr-2"></i>
+                        <span>Email Address</span>
                     </label>
                     {{ form.email(class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Enter your email", type="email") }}
 
                     {% if form.email.errors %}
                         <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                             {% for error in form.email.errors %}
-                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                                <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -61,11 +64,12 @@
 
                 <!-- Password Field -->
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-lock mr-1"></i>Password
+                    <label for="password" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-lock mr-2"></i>
+                        <span>Password</span>
                     </label>
                     <div class="relative">
-                        {{ form.password(class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Choose a strong password", id="password") }}
+                        {{ form.password(class="appearance-none relative block w-full px-3 py-3 pr-10 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Choose a strong password", id="password") }}
                         <button type="button" onclick="togglePassword('password', 'toggleIcon1')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                             <i class="fas fa-eye" id="toggleIcon1"></i>
                         </button>
@@ -74,7 +78,7 @@
                     {% if form.password.errors %}
                         <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                             {% for error in form.password.errors %}
-                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                                <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -87,19 +91,21 @@
                             </div>
                             <span id="strengthText" class="text-xs text-gray-500 dark:text-gray-400">Weak</span>
                         </div>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                            <i class="fas fa-info-circle mr-1"></i>Password must be at least 6 characters long
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 flex items-center">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            <span>Password must be at least 6 characters long</span>
                         </p>
                     </div>
                 </div>
 
                 <!-- Confirm Password Field -->
                 <div>
-                    <label for="confirm_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-lock mr-1"></i>Confirm Password
+                    <label for="confirm_password" class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-lock mr-2"></i>
+                        <span>Confirm Password</span>
                     </label>
                     <div class="relative">
-                        {{ form.confirm_password(class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Confirm your password", id="confirm_password") }}
+                        {{ form.confirm_password(class="appearance-none relative block w-full px-3 py-3 pr-10 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent dark:bg-gray-700 transition-all", placeholder="Confirm your password", id="confirm_password") }}
                         <button type="button" onclick="togglePassword('confirm_password', 'toggleIcon2')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                             <i class="fas fa-eye" id="toggleIcon2"></i>
                         </button>
@@ -108,7 +114,7 @@
                     {% if form.confirm_password.errors %}
                         <div class="mt-2 text-sm text-red-600 dark:text-red-400 animate-slide-down">
                             {% for error in form.confirm_password.errors %}
-                                <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
+                                <p class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i><span>{{ error }}</span></p>
                             {% endfor %}
                         </div>
                     {% endif %}
