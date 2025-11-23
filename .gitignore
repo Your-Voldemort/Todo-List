@@ -23,6 +23,15 @@ wheels/
 .installed.cfg
 *.egg
 .kiro
+.tests
+.hypothesis
+/tests/__pychache__
+/tests/test_integration'
+/tests/test_properties
+/tests/test_unit
+/tests/__init__.py
+/tests/conftest.py
+
 
 # Flask
 instance/
