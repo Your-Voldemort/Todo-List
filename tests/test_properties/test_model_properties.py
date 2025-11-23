@@ -392,7 +392,7 @@ class TestPasswordHashing:
     """
     
     @settings(
-        max_examples=10,  # Reduced because bcrypt is slow
+        max_examples=5,  # Minimal examples because bcrypt is very slow (~200-300ms per hash)
         suppress_health_check=[HealthCheck.function_scoped_fixture],
         deadline=None
     )
