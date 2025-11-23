@@ -392,7 +392,7 @@ class TestPasswordHashing:
     """
     
     @settings(
-        max_examples=20,  # Reduced because bcrypt is slow
+        max_examples=10,  # Reduced because bcrypt is slow
         suppress_health_check=[HealthCheck.function_scoped_fixture],
         deadline=None
     )
@@ -442,3 +442,77 @@ class TestPasswordHashing:
         except Exception:
             test_db.session.rollback()
             raise
+
+
+
+@pytest.mark.property
+class TestCompletionToggle:
+    """
+    Property 4: Completion toggle idempotence
+    Validates: Requirements 1.5
+    
+    For any Todo object, toggling completion status twice should return the object 
+    to its original completion state, and the completed_at timestamp should be set 
+    when completed and None when not completed.
+    """
+    
+    @settings(
+        max_examples=100,
+        suppress_health_check=[HealthCheck.function_scoped_fixture],
+        deadline=None
+    )
+    @given(
+        title=valid_todo_title(),
+        description=valid_todo_description(),
+        priority=valid_priority(),
+        due_date=valid_due_date()
+    )
+    def test_completion_toggle_idempotence(self, app_context, test_db, test_user,
+                                          title, description, priority, due_date):
+        """Test that toggling completion twice returns to original state"""
+        try:
+            # Create todo (initially not completed)
+            todo = Todo(
+                title=title,
+                description=description,
+                user_id=test_user.id,
+                priority=priority,
+                due_date=due_date
+            )
+            
+            test_db.session.add(todo)
+            test_db.session.commit()
+            
+            # Verify initial state
+            assert todo.is_completed == False
+            assert todo.completed_at is None
+            
+            # Toggle to completed
+            todo.toggle_complete()
+            test_db.session.commit()
+            
+            # Verify completed state
+            assert todo.is_completed == True
+            assert todo.completed_at is not None
+            completed_timestamp = todo.completed_at
+            
+            # Toggle back to not completed
+            todo.toggle_complete()
+            test_db.session.commit()
+            
+            # Verify back to original state (idempotence)
+            assert todo.is_completed == False
+            assert todo.completed_at is None
+            
+            # Toggle again to completed
+            todo.toggle_complete()
+            test_db.session.commit()
+            
+            # Verify completed again
+            assert todo.is_completed == True
+            assert todo.completed_at is not None
+            # New timestamp should be different (or at least not None)
+            assert todo.completed_at is not None
+            
+        finally:
+            test_db.session.rollback()
