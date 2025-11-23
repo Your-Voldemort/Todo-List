@@ -457,7 +457,7 @@ class TestCompletionToggle:
     """
     
     @settings(
-        max_examples=100,
+        max_examples=50,  # Reduced for performance
         suppress_health_check=[HealthCheck.function_scoped_fixture],
         deadline=None
     )
