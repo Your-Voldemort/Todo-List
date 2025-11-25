@@ -31,6 +31,9 @@ wheels/
 /tests/test_unit
 /tests/__init__.py
 /tests/conftest.py
+rovo.md
+suggestion.md
+UPGRADE_ROADMAP.md
 
 
 # Flask
