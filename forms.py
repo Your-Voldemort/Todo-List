@@ -4,6 +4,12 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from models import User
 
 
+def validate_not_whitespace(form, field):
+    """Custom validator to reject whitespace-only strings"""
+    if field.data and field.data.strip() == '':
+        raise ValidationError('This field cannot contain only whitespace characters.')
+
+
 class RegistrationForm(FlaskForm):
     """User registration form"""
     username = StringField('Username',
