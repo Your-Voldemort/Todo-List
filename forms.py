@@ -48,7 +48,7 @@ class LoginForm(FlaskForm):
 class TodoForm(FlaskForm):
     """Todo creation/editing form"""
     title = StringField('Title',
-                       validators=[DataRequired(), Length(min=1, max=100)])
+                       validators=[DataRequired(), Length(min=1, max=100), validate_not_whitespace])
     description = TextAreaField('Description',
                                validators=[Optional(), Length(max=1000)])
     priority = SelectField('Priority',
