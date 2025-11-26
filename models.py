@@ -144,6 +144,13 @@ class Todo(db.Model):
     def __repr__(self) -> str:
         return f'<Todo {self.title}>'
 
+    @validates('title')
+    def validate_title(self, key, title):
+        """Validate that title is not empty or whitespace-only"""
+        if not title or title.strip() == '':
+            raise ValueError('Title cannot be empty or contain only whitespace')
+        return title
+
     @property
     def is_overdue(self) -> bool:
         """Check if todo is overdue"""
