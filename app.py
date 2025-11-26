@@ -515,12 +515,16 @@ def search():
 @login_required
 def add_legacy():
     """Legacy add route for backward compatibility"""
-    title = request.form.get('title', '').strip()
+    title = request.form.get('title', '')
     description = request.form.get('description', '').strip()
 
-    if not title:
-        flash('Title is required!', 'error')
+    # Check if title is empty or whitespace-only
+    if not title or title.strip() == '':
+        flash('Title is required and cannot be only whitespace!', 'error')
         return redirect(url_for('index'))
+    
+    # Use the stripped version for storage
+    title = title.strip()
 
     if len(title) > 100:
         flash('Title must be 100 characters or less!', 'error')
